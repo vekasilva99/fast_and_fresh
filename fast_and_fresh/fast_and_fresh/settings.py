@@ -77,7 +77,7 @@ WSGI_APPLICATION = 'fast_and_fresh.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'fast_and_fresh',
+        'NAME':'Fast_And_Fresh',
         'USER': 'root',
         'PASSWORD': '211Ce496',
         'HOST':'localhost'
