@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'api'
+    'api',
+    'rest_framework'
 ]
 
 MIDDLEWARE = [
@@ -77,10 +78,10 @@ WSGI_APPLICATION = 'fast_and_fresh.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME':'Fast_And_Fresh',
+        'NAME': 'Fast_And_Fresh',
         'USER': 'root',
-        'PASSWORD': '211Ce496',
-        'HOST':'localhost'
+        'PASSWORD': 'Vt21251314',
+        'HOST': 'localhost'
     }
 }
 
