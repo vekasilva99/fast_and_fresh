@@ -1,12 +1,12 @@
 from django.contrib import admin
-from .models import Product, Client, Member, Zona, City, State, Product_Type, Type_Of_Product, Batch, Store, Delivery, PickUp, Bill, BillDetails, Currency, ExchangeRate, CashRegister, CashRegisterIncome, PaymentMethod, Employee, Job, IVA
+from .models import Product, Client, Member, Zona, City, State, Payment, Product_Type, Type_Of_Product, Batch, Store, Delivery, PickUp, Bill, BillDetails, Currency, ExchangeRate, CashRegister, CashRegisterIncome, PaymentMethod, Employee, Job, IVA
 
 # Register your models here.
 
 
 class DeliveryAdmin(admin.ModelAdmin):
-    list_display = ('id', 'delivery_price', 'delivery_transport',
-                    'empleado', 'bill_id', 'delivery_status', 'zona', 'address')
+    list_display = ('id', 'delivery_price',
+                    'employee', 'bill_id', 'delivery_status', 'zona', 'address')
 
 
 class PickUpAdmin(admin.ModelAdmin):
@@ -95,6 +95,10 @@ class StoreAdmin (admin.ModelAdmin):
     list_display = ('id', 'store_name', 'open_time',
                     'closing_time', 'store_phone', 'supervisor')
 
+class ExchangeRateAdmin (admin.ModelAdmin):
+    list_display = ('id', 'origin_currency', 'exchange_rate',
+                    'date')
+
 
 # Registrar los modelos
 
@@ -120,3 +124,4 @@ admin.site.register(PaymentMethod, PaymentMethodAdmin)
 admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(Job, JobAdmin)
 admin.site.register(IVA, IVAAdmin)
+admin.site.register(Payment)

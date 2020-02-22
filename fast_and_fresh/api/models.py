@@ -20,11 +20,13 @@ class Batch (models.Model):
     price_dolars_u = models.FloatField()
     units_sold = models.IntegerField(default=0)
     units_lost = models.IntegerField(default=0)
+    store = models.ForeignKey(
+        'Store', on_delete=models.CASCADE, null=False, blank=False, default=None)
+   
 
 
 class Type_Of_Product (models.Model):
     type = models.CharField(max_length=50, editable=False)
-
     def __str__(self):
         return self.type
 
@@ -60,6 +62,7 @@ class Member (models.Model):
         'Zona', on_delete=models.CASCADE, null=False, blank=False)
     client = models.OneToOneField(
         'Client', on_delete=models.CASCADE, null=False, blank=False)
+    is_active=models.BooleanField()
 
 
 class Zona (models.Model):
@@ -104,12 +107,10 @@ class Store (models.Model):
 class Delivery (models.Model):
     STATUS = ('Entregado', ('Entregado')), ('No Entregado', ('No Entregado'))
     delivery_price = models.FloatField()
-    delivery_transport=models.ForeignKey(
-        'Transport', on_delete=models.CASCADE, null=False, blank=False)
-    empleado=models.ForeignKey(
-        'Employee', on_delete=models.CASCADE, null=False, blank=False)
+    employee=models.ForeignKey(
+        'Employee', on_delete=models.CASCADE, null=False, blank=False, default=None)
     bill_id=models.ForeignKey(
-        'Bill', on_delete=models.CASCADE, null=False, blank=False)
+        'Bill', on_delete=models.CASCADE, null=False, blank=False, default=None)
     delivery_status = models.CharField(
         max_length=15, choices=STATUS, blank=False, null=False)
     zona = models.ForeignKey(
@@ -125,21 +126,14 @@ class PickUp (models.Model):
         'Bill', on_delete=models.CASCADE, null=False, blank=False)
 
 
-class Transport (models.Model):
-    BRAND = ('TOYOTA', ('TOYOTA')), ('FORD', ('FORD')), ('HONDA', ('HONDA'))
-    transport_plate = models.CharField(max_length=7)
-    transport_model = models.CharField(max_length=30)
-    transport_brand = models.CharField(max_length=10, choices=BRAND)
-
-
 class Bill (models.Model):
     cash_register_id =models.ForeignKey(
-        'CashRegister', on_delete=models.CASCADE, null=False, blank=False)
+        'CashRegister', on_delete=models.CASCADE, null=False, blank=False,default=None)
     client_id = models.ForeignKey( 
-        'Client', on_delete=models.CASCADE, null=False, blank=False)
+        'Client', on_delete=models.CASCADE, null=False, blank=False, default=None)
     bill_sub_total = models.FloatField()
     bill_iva = models.ForeignKey(
-        'IVA', on_delete=models.CASCADE, null=False, blank=False)
+        'IVA', on_delete=models.CASCADE, null=False, blank=False, default=None)
     bill_date = models.DateField(auto_now_add=True)
     bill_time = models.TimeField(auto_now_add=True)
     bill_sale = models.FloatField()
@@ -152,13 +146,21 @@ class BillDetails (models.Model):
     product_batch = models.ForeignKey(
         'Batch', on_delete=models.CASCADE, null=False, blank=False)
     product_quantity = models.IntegerField()
+    product_discount = models.FloatField(default=0)
 
 
 class CashRegister (models.Model):
     store_id = models.ForeignKey(
         'Store', on_delete=models.CASCADE, null=False, blank=False)
 
-
+class Payment(models.Model):
+    payment_amount=models.FloatField()
+    payment_method=models.ForeignKey(
+        'PaymentMethod', on_delete=models.CASCADE, null=False, blank=False)
+    payment_method_instrument=models.IntegerField(null=True)   
+    bill=models.ForeignKey(
+        'Bill', on_delete=models.CASCADE, null=False, blank=False)
+    
 class PaymentMethod (models.Model):
     payment_method = models.CharField(max_length=20)
 
@@ -177,9 +179,8 @@ class CashRegisterIncome(models.Model):
 class ExchangeRate (models.Model):
     origin_currency = models.ForeignKey(
         'Currency', on_delete=models.CASCADE, null=False, blank=False)
-    # destination_currency = models.ForeignKey(
-    #     'Currency', on_delete=models.CASCADE, null=False, blank=False)
     exchange_rate = models.FloatField()
+    date= models.DateField(auto_now_add=True)
 
 class Employee (models.Model):
     GENDER = ('F', ('Femenine')), ('M', ('Masculine'))
